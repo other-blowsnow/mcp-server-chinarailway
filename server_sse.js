@@ -1,6 +1,6 @@
 import express from "express";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import {StdioServerTransport} from "@modelcontextprotocol/sdk/server/stdio.js";
+import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
 import { z } from "zod";
 import ChinaRailway from "./chinaRailway.js";
 
@@ -59,6 +59,20 @@ server.tool("search",
     }
 );
 
-// Start receiving messages on stdin and sending messages on stdout
-const transport = new StdioServerTransport();
-await server.connect(transport);
+
+let transport = null;
+
+app.get("/sse", (req, res) => {
+    transport = new SSEServerTransport("/messages", res);
+    server.connect(transport);
+});
+
+app.post("/messages", (req, res) => {
+    if (transport) {
+        transport.handlePostMessage(req, res);
+    }
+});
+
+app.listen(3000);
+
+console.log("Server is running on http://localhost:3000/sse");

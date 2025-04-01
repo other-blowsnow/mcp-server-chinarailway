@@ -3,7 +3,7 @@
 
 ## 启动服务
 ```bash
-node server.js
+node server_sse.js
 ```
 
 
