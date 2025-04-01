@@ -1,10 +1,7 @@
-import express from "express";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import {StdioServerTransport} from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 import ChinaRailway from "./chinaRailway.js";
-
-const app = express();
 
 // Create an MCP server
 const server = new McpServer({
